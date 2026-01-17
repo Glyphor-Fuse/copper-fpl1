@@ -24,20 +24,7 @@ export default function Index() {
                 className="aspect-square bg-zinc-200 rounded-sm overflow-hidden"
               >
                 <img 
-                  src="<div className="relative">
-  <img 
-    src="https://images.pexels.com/photos/15548856/pexels-photo-15548856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
-    alt="Freshly roasted coffee beans cooling in an industrial coffee roaster, capturing the essence of artisanal roasting."
-    width="2048"
-    height="2048"
-    className="w-full h-full object-cover"
-  />
-  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
-    <a href="https://www.pexels.com/photo/coffee-grains-in-roaster-15548856/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
-      Photo by Dustin Konrad on Pexels
-    </a>
-  </div>
-</div>" 
+                  src="https://images.pexels.com/photos/15548856/pexels-photo-15548856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
                   alt="Roasting Process" 
                   className="w-full h-full object-cover"
                 />
@@ -85,20 +72,7 @@ export default function Index() {
             ].map((item) => (
               <div key={item.id} className="min-w-[300px] md:min-w-[400px] aspect-[3/4] bg-zinc-100 rounded-sm overflow-hidden relative group">
                 <img 
-                  src={`<div className="relative">
-  <img 
-    src="https://images.pexels.com/photos/33964550/pexels-photo-33964550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800" 
-    alt="Warm and inviting café setting in Hà Nội with mid-century modern furniture and a creative bulletin board."
-    width="2832"
-    height="4256"
-    className="w-full h-full object-cover"
-  />
-  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
-    <a href="https://www.pexels.com/photo/cozy-cafe-interior-with-decorated-bulletin-board-33964550/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
-      Photo by Thang Nguyen on Pexels
-    </a>
-  </div>
-</div>`} 
+                  src="https://images.pexels.com/photos/33964550/pexels-photo-33964550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   alt={item.description}
                 />
@@ -115,20 +89,7 @@ export default function Index() {
             {/* Map Placeholder */}
             <div className="aspect-square md:aspect-auto bg-zinc-800 relative overflow-hidden group">
                <img 
-                src="<div className="relative">
-  <img 
-    src="https://images.pexels.com/photos/10784419/pexels-photo-10784419.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
-    alt="Scenic view of the iconic Golden Gate Bridge spanning San Francisco Bay at daylight."
-    width="3024"
-    height="3024"
-    className="w-full h-full object-cover"
-  />
-  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
-    <a href="https://www.pexels.com/photo/golden-gate-bridge-under-clear-sky-10784419/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
-      Photo by Torben Jensen on Pexels
-    </a>
-  </div>
-</div>" 
+                src="https://images.pexels.com/photos/10784419/pexels-photo-10784419.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
                 className="w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-500"
                 alt="Map of San Francisco Hayes Valley location"
                />
