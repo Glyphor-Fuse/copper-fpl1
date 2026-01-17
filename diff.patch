@@ -1,0 +1,699 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 3d7ded3..3ed1388 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,35 +1,18 @@
+-import { useState } from 'react'
+-import reactLogo from './assets/react.svg'
+-import viteLogo from '/vite.svg'
+-import './App.css'
++import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
++import Index from './pages/Index';
++import { GlyphorBadge } from './components/GlyphorBadge';
+ 
+ function App() {
+-  const [count, setCount] = useState(0)
+-
+   return (
+-    <>
+-      <div>
+-        <a href="https://vite.dev" target="_blank">
+-          <img src={viteLogo} className="logo" alt="Vite logo" />
+-        </a>
+-        <a href="https://react.dev" target="_blank">
+-          <img src={reactLogo} className="logo react" alt="React logo" />
+-        </a>
+-      </div>
+-      <h1>Vite + React</h1>
+-      <div className="card">
+-        <button onClick={() => setCount((count) => count + 1)}>
+-          count is {count}
+-        </button>
+-        <p>
+-          Edit <code>src/App.tsx</code> and save to test HMR
+-        </p>
++    <Router>
++      <div className="relative min-h-screen w-full bg-zinc-50 text-zinc-900 font-sans selection:bg-zinc-900 selection:text-zinc-50">
++        <Routes>
++          <Route path="/" element={<Index />} />
++        </Routes>
++        <GlyphorBadge />
+       </div>
+-      <p className="read-the-docs">
+-        Click on the Vite and React logos to learn more
+-      </p>
+-    </>
+-  )
++    </Router>
++  );
+ }
+ 
+-export default App
++export default App;
+\ No newline at end of file
+diff --git a/src/components/Footer.tsx b/src/components/Footer.tsx
+new file mode 100644
+index 0000000..e71cb21
+--- /dev/null
++++ b/src/components/Footer.tsx
+@@ -0,0 +1,54 @@
++import { ArrowUpRight } from 'lucide-react';
++
++export const Footer = () => {
++  return (
++    <footer className="bg-zinc-950 text-zinc-50 pt-24 pb-12">
++      <div className="max-w-7xl mx-auto px-6">
++        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-24 border-b border-zinc-800 pb-24">
++          <div className="col-span-1 md:col-span-2">
++            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none mb-8">
++              STAY<br />CAFFEINATED.
++            </h2>
++            <div className="flex gap-4">
++              <input 
++                type="email" 
++                placeholder="Email Address" 
++                className="bg-transparent border-b border-zinc-700 py-2 w-64 text-zinc-300 focus:outline-none focus:border-zinc-50 transition-colors"
++              />
++              <button className="text-zinc-50 hover:text-zinc-300">
++                <ArrowUpRight />
++              </button>
++            </div>
++          </div>
++
++          <div>
++            <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-6">Explore</h4>
++            <ul className="space-y-4 text-zinc-400">
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">Our Story</a></li>
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">Shop Coffee</a></li>
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">Locations</a></li>
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">Wholesale</a></li>
++            </ul>
++          </div>
++
++          <div>
++            <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-6">Social</h4>
++            <ul className="space-y-4 text-zinc-400">
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">Instagram</a></li>
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">Twitter</a></li>
++              <li><a href="#" className="hover:text-zinc-50 transition-colors">TikTok</a></li>
++            </ul>
++          </div>
++        </div>
++
++        <div className="flex flex-col md:flex-row justify-between items-end text-xs text-zinc-600 font-mono uppercase tracking-wide">
++          <span>© 2024 Vesper Coffee Roasters</span>
++          <div className="flex gap-8 mt-4 md:mt-0">
++            <a href="#">Privacy Policy</a>
++            <a href="#">Terms of Service</a>
++          </div>
++        </div>
++      </div>
++    </footer>
++  );
++};
+\ No newline at end of file
+diff --git a/src/components/GlyphorBadge.tsx b/src/components/GlyphorBadge.tsx
+new file mode 100644
+index 0000000..3e81fa1
+--- /dev/null
++++ b/src/components/GlyphorBadge.tsx
+@@ -0,0 +1,46 @@
++import { useState, useEffect } from 'react';
++import { X } from 'lucide-react';
++import { motion, AnimatePresence } from 'framer-motion';
++
++export const GlyphorBadge = () => {
++  const [isVisible, setIsVisible] = useState(false);
++
++  useEffect(() => {
++    const hidden = localStorage.getItem('glyphor-badge-hidden');
++    if (!hidden) setIsVisible(true);
++  }, []);
++
++  const handleClose = () => {
++    setIsVisible(false);
++    localStorage.setItem('glyphor-badge-hidden', 'true');
++  };
++
++  return (
++    <AnimatePresence>
++      {isVisible && (
++        <motion.div
++          initial={{ opacity: 0, y: 20 }}
++          animate={{ opacity: 1, y: 0 }}
++          exit={{ opacity: 0, y: 20 }}
++          className="fixed bottom-4 right-4 z-50 flex items-center gap-2 pl-3 pr-1 py-1.5 bg-zinc-900 rounded-full shadow-lg border border-zinc-800"
++        >
++          <span className="text-xs font-medium text-zinc-400 flex items-center gap-1.5">
++            Made with 
++            <img 
++              src="/glyphor-logo-white.png" 
++              alt="Glyphor" 
++              className="h-3.5 w-auto opacity-90" 
++            />
++            Fuse
++          </span>
++          <button
++            onClick={handleClose}
++            className="p-1 hover:bg-zinc-800 rounded-full transition-colors text-zinc-500 hover:text-zinc-300"
++          >
++            <X size={12} />
++          </button>
++        </motion.div>
++      )}
++    </AnimatePresence>
++  );
++};
+\ No newline at end of file
+diff --git a/src/components/Hero.tsx b/src/components/Hero.tsx
+new file mode 100644
+index 0000000..b1da0d9
+--- /dev/null
++++ b/src/components/Hero.tsx
+@@ -0,0 +1,78 @@
++import { motion } from 'framer-motion';
++import { ArrowRight } from 'lucide-react';
++
++export const Hero = () => {
++  return (
++    <section className="relative w-full min-h-screen flex flex-col justify-end pb-12 md:pb-24 overflow-hidden">
++      {/* Background Image */}
++      <div className="absolute inset-0 w-full h-full z-0">
++        <img 
++          src="<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/11069882/pexels-photo-11069882.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800" 
++    alt="A captivating close-up of freshly brewed coffee being poured into a glass on a rustic wooden table."
++    width="4000"
++    height="6000"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/pouring-coffee-in-glass-11069882/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Burak Evlivan on Pexels
++    </a>
++  </div>
++</div>" 
++          alt="Barista pouring coffee" 
++          className="w-full h-full object-cover opacity-90"
++        />
++        <div className="absolute inset-0 bg-gradient-to-t from-zinc-50 via-transparent to-transparent opacity-90" />
++      </div>
++
++      <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
++        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
++          
++          <div className="md:col-span-8">
++            <motion.div
++              initial={{ opacity: 0, y: 40 }}
++              animate={{ opacity: 1, y: 0 }}
++              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
++            >
++              <span className="block text-xs font-mono tracking-widest uppercase text-zinc-500 mb-4">
++                Est. 2024 — San Francisco
++              </span>
++              <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] text-zinc-900 mb-8">
++                MODERN<br />
++                RITUALS.
++              </h1>
++            </motion.div>
++          </div>
++
++          <div className="md:col-span-4 flex flex-col items-start justify-end gap-6 md:pb-4">
++            <motion.p 
++              initial={{ opacity: 0 }}
++              animate={{ opacity: 1 }}
++              transition={{ delay: 0.4, duration: 1 }}
++              className="text-lg text-zinc-600 leading-relaxed max-w-sm"
++            >
++              We believe coffee is more than caffeine. It's a moment of clarity in a chaotic world. Sourced ethically, roasted meticulously.
++            </motion.p>
++            
++            <motion.button
++              initial={{ opacity: 0, scale: 0.9 }}
++              animate={{ opacity: 1, scale: 1 }}
++              transition={{ delay: 0.6 }}
++              whileHover={{ scale: 1.05 }}
++              whileTap={{ scale: 0.95 }}
++              className="group flex items-center gap-3 pl-6 pr-4 py-4 bg-zinc-900 text-zinc-50 rounded-full transition-all hover:shadow-2xl hover:shadow-zinc-900/20"
++            >
++              <span className="font-medium tracking-wide">Start Order</span>
++              <div className="w-8 h-8 flex items-center justify-center bg-zinc-800 rounded-full group-hover:bg-zinc-700 transition-colors">
++                <ArrowRight className="w-4 h-4" />
++              </div>
++            </motion.button>
++          </div>
++
++        </div>
++      </div>
++    </section>
++  );
++};
+\ No newline at end of file
+diff --git a/src/components/MenuSection.tsx b/src/components/MenuSection.tsx
+new file mode 100644
+index 0000000..43215e4
+--- /dev/null
++++ b/src/components/MenuSection.tsx
+@@ -0,0 +1,110 @@
++import { motion } from 'framer-motion';
++
++const products = [
++  {
++    name: "Ethiopian Yirgacheffe",
++    price: "$24.00",
++    desc: "Floral, Bergamot, Lemon",
++    image: "<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/5926957/pexels-photo-5926957.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
++    alt="Overhead shot of coffee beans packed in brown paper bags, showcasing rich texture and freshness."
++    width="2048"
++    height="2048"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/coffee-beans-in-brown-box-5926957/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Fatih Arslan on Pexels
++    </a>
++  </div>
++</div>"
++  },
++  {
++    name: "Oat Flat White",
++    price: "$5.50",
++    desc: "Velvety microfoam, double shot",
++    image: "<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/544113/pexels-photo-544113.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
++    alt="Top view of a beautifully crafted latte with intricate art in a ceramic cup on a neutral background."
++    width="2976"
++    height="2976"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/coffee-cup-with-latte-art-froth-on-white-surface-544113/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Tirachard Kumtanom on Pexels
++    </a>
++  </div>
++</div>"
++  },
++  {
++    name: "Cold Brew Reserve",
++    price: "$6.00",
++    desc: "Steeped 24h, chocolate notes",
++    image: "<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/28944483/pexels-photo-28944483.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
++    alt="Chilled cold brew coffee in a plastic cup with a straw, perfect for a hot summer day."
++    width="5740"
++    height="5740"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/refreshing-cold-brew-coffee-on-ice-28944483/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Kunal Lakhotia on Pexels
++    </a>
++  </div>
++</div>"
++  }
++];
++
++export const MenuSection = () => {
++  return (
++    <section className="py-32 bg-zinc-50">
++      <div className="max-w-7xl mx-auto px-6">
++        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-zinc-200 pb-8">
++          <div>
++            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">Selection</span>
++            <h2 className="text-5xl md:text-6xl font-bold text-zinc-900 tracking-tight mt-2">
++              WEEKLY<br />HIGHLIGHTS
++            </h2>
++          </div>
++          <button className="hidden md:block text-zinc-500 hover:text-zinc-900 transition-colors text-sm font-medium">
++            View Full Menu
++          </button>
++        </div>
++
++        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
++          {products.map((item, i) => (
++            <motion.div 
++              key={i}
++              initial={{ opacity: 0, y: 20 }}
++              whileInView={{ opacity: 1, y: 0 }}
++              viewport={{ once: true }}
++              transition={{ delay: i * 0.1 }}
++              className="group cursor-pointer"
++            >
++              <div className="aspect-[4/5] overflow-hidden rounded-sm bg-zinc-100 mb-6 relative">
++                <img 
++                  src={item.image} 
++                  alt={item.name}
++                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
++                />
++                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
++              </div>
++              <div className="flex justify-between items-start">
++                <div>
++                  <h3 className="text-xl font-medium text-zinc-900 tracking-tight">{item.name}</h3>
++                  <p className="text-zinc-500 text-sm mt-1">{item.desc}</p>
++                </div>
++                <span className="text-zinc-900 font-mono text-sm">{item.price}</span>
++              </div>
++            </motion.div>
++          ))}
++        </div>
++      </div>
++    </section>
++  );
++};
+\ No newline at end of file
+diff --git a/src/components/Navbar.tsx b/src/components/Navbar.tsx
+new file mode 100644
+index 0000000..65391f9
+--- /dev/null
++++ b/src/components/Navbar.tsx
+@@ -0,0 +1,35 @@
++import { motion } from 'framer-motion';
++import { Menu, ShoppingBag } from 'lucide-react';
++
++export const Navbar = () => {
++  return (
++    <motion.nav 
++      initial={{ y: -100 }}
++      animate={{ y: 0 }}
++      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
++      className="fixed top-0 left-0 right-0 z-40 px-6 py-6 flex justify-between items-start pointer-events-none"
++    >
++      <div className="pointer-events-auto">
++        <span className="block text-xl font-bold tracking-tighter leading-none text-zinc-900 mix-blend-difference">
++          VESPER
++          <br />
++          COFFEE.
++        </span>
++      </div>
++
++      <div className="flex gap-4 pointer-events-auto">
++        <button className="hidden md:flex items-center justify-center px-6 py-2.5 bg-zinc-900/5 backdrop-blur-md border border-zinc-900/10 rounded-full text-sm font-medium hover:bg-zinc-900 hover:text-zinc-50 transition-all duration-300">
++          Order Ahead
++        </button>
++        
++        <button className="w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-md border border-zinc-200 rounded-full shadow-sm hover:scale-105 transition-transform">
++          <ShoppingBag className="w-4 h-4 text-zinc-900" />
++        </button>
++        
++        <button className="w-10 h-10 flex items-center justify-center bg-zinc-900 text-zinc-50 rounded-full hover:scale-105 transition-transform">
++          <Menu className="w-4 h-4" />
++        </button>
++      </div>
++    </motion.nav>
++  );
++};
+\ No newline at end of file
+diff --git a/src/index.css b/src/index.css
+index 444f889..9b64871 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -1,70 +1,44 @@
+ @import "tailwindcss";
+ 
+ :root {
+-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
++  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+   line-height: 1.5;
+   font-weight: 400;
+ 
+-  color-scheme: light dark;
+-  color: rgba(255, 255, 255, 0.87);
+-  background-color: #242424;
+-
++  color-scheme: light;
+   font-synthesis: none;
+   text-rendering: optimizeLegibility;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+ }
+ 
+-a {
+-  font-weight: 500;
+-  color: #646cff;
+-  text-decoration: inherit;
+-}
+-a:hover {
+-  color: #535bf2;
+-}
+-
+ body {
+   margin: 0;
+-  display: flex;
+-  place-items: center;
+-  min-width: 320px;
++  padding: 0;
+   min-height: 100vh;
++  width: 100%;
++  background-color: #FAFAFA; /* zinc-50 equivalent */
++  color: #18181B; /* zinc-900 equivalent */
++  overflow-x: hidden;
+ }
+ 
+-h1 {
+-  font-size: 3.2em;
+-  line-height: 1.1;
++/* Custom Scrollbar */
++::-webkit-scrollbar {
++  width: 8px;
+ }
+-
+-button {
+-  border-radius: 8px;
+-  border: 1px solid transparent;
+-  padding: 0.6em 1.2em;
+-  font-size: 1em;
+-  font-weight: 500;
+-  font-family: inherit;
+-  background-color: #1a1a1a;
+-  cursor: pointer;
+-  transition: border-color 0.25s;
++::-webkit-scrollbar-track {
++  background: transparent;
+ }
+-button:hover {
+-  border-color: #646cff;
++::-webkit-scrollbar-thumb {
++  background: #A1A1AA; /* zinc-400 */
++  border-radius: 4px;
+ }
+-button:focus,
+-button:focus-visible {
+-  outline: 4px auto -webkit-focus-ring-color;
++::-webkit-scrollbar-thumb:hover {
++  background: #71717A; /* zinc-500 */
+ }
+ 
+-@media (prefers-color-scheme: light) {
+-  :root {
+-    color: #213547;
+-    background-color: #ffffff;
+-  }
+-  a:hover {
+-    color: #747bff;
+-  }
+-  button {
+-    background-color: #f9f9f9;
+-  }
+-}
++/* Selection */
++::selection {
++  background-color: #18181B; /* zinc-900 */
++  color: #FAFAFA; /* zinc-50 */
++}
+\ No newline at end of file
+diff --git a/src/pages/Index.tsx b/src/pages/Index.tsx
+new file mode 100644
+index 0000000..d7bc67a
+--- /dev/null
++++ b/src/pages/Index.tsx
+@@ -0,0 +1,183 @@
++import { Navbar } from '../components/Navbar';
++import { Hero } from '../components/Hero';
++import { MenuSection } from '../components/MenuSection';
++import { Footer } from '../components/Footer';
++import { motion } from 'framer-motion';
++import { MapPin, Clock } from 'lucide-react';
++
++export default function Index() {
++  return (
++    <div className="bg-zinc-50 min-h-screen">
++      <Navbar />
++      <Hero />
++      
++      {/* The Roast Section - Asymmetric Layout */}
++      <section className="py-32 overflow-hidden">
++        <div className="max-w-7xl mx-auto px-6">
++          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
++            <div className="relative">
++              <motion.div 
++                initial={{ opacity: 0, x: -50 }}
++                whileInView={{ opacity: 1, x: 0 }}
++                viewport={{ once: true }}
++                transition={{ duration: 0.8 }}
++                className="aspect-square bg-zinc-200 rounded-sm overflow-hidden"
++              >
++                <img 
++                  src="<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/15548856/pexels-photo-15548856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
++    alt="Freshly roasted coffee beans cooling in an industrial coffee roaster, capturing the essence of artisanal roasting."
++    width="2048"
++    height="2048"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/coffee-grains-in-roaster-15548856/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Dustin Konrad on Pexels
++    </a>
++  </div>
++</div>" 
++                  alt="Roasting Process" 
++                  className="w-full h-full object-cover"
++                />
++              </motion.div>
++              {/* Floating detail card */}
++              <motion.div 
++                initial={{ opacity: 0, y: 50 }}
++                whileInView={{ opacity: 1, y: 0 }}
++                viewport={{ once: true }}
++                transition={{ delay: 0.3, duration: 0.8 }}
++                className="absolute -bottom-12 -right-12 w-64 p-6 bg-zinc-900 text-zinc-50 shadow-2xl hidden md:block"
++              >
++                <span className="block text-4xl font-bold mb-1">204°C</span>
++                <span className="text-xs text-zinc-400 font-mono uppercase">Target Drop Temp</span>
++              </motion.div>
++            </div>
++            
++            <div className="md:pl-12">
++              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4 block">The Roast</span>
++              <h2 className="text-5xl md:text-6xl font-bold text-zinc-900 tracking-tight leading-none mb-8">
++                SOURCED WITH<br />INTENTION.
++              </h2>
++              <p className="text-lg text-zinc-600 leading-relaxed mb-8">
++                We travel to the source. From the highlands of Ethiopia to the volcanic soil of Guatemala, we build direct relationships with farmers who share our obsession with quality. Small batch roasting in San Francisco ensures every bean tells its story.
++              </p>
++              <a href="/sourcing" className="inline-flex items-center text-zinc-900 font-medium border-b border-zinc-900 pb-1 hover:text-zinc-600 hover:border-zinc-600 transition-colors">
++                Read our sourcing philosophy
++              </a>
++            </div>
++          </div>
++        </div>
++      </section>
++
++      <MenuSection />
++
++      {/* Vibe Check - Large Imagery */}
++      <section className="py-24">
++        <div className="w-full overflow-hidden">
++          <div className="flex gap-4 min-w-full overflow-x-auto pb-8 px-6 no-scrollbar">
++            {[
++              { id: 1, description: "Minimalist coffee shop interior with natural lighting" },
++              { id: 2, description: "Barista crafting a specialty espresso drink" },
++              { id: 3, description: "Artisan coffee beans in a ceramic bowl" },
++              { id: 4, description: "Cozy seating area with industrial design elements" }
++            ].map((item) => (
++              <div key={item.id} className="min-w-[300px] md:min-w-[400px] aspect-[3/4] bg-zinc-100 rounded-sm overflow-hidden relative group">
++                <img 
++                  src={`<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/33964550/pexels-photo-33964550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800" 
++    alt="Warm and inviting café setting in Hà Nội with mid-century modern furniture and a creative bulletin board."
++    width="2832"
++    height="4256"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/cozy-cafe-interior-with-decorated-bulletin-board-33964550/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Thang Nguyen on Pexels
++    </a>
++  </div>
++</div>`} 
++                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
++                  alt={item.description}
++                />
++              </div>
++            ))}
++          </div>
++        </div>
++      </section>
++
++      {/* Location Section - Brutalist Grid */}
++      <section className="py-32 bg-zinc-900 text-zinc-50">
++        <div className="max-w-7xl mx-auto px-6">
++          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-zinc-800">
++            {/* Map Placeholder */}
++            <div className="aspect-square md:aspect-auto bg-zinc-800 relative overflow-hidden group">
++               <img 
++                src="<div className="relative">
++  <img 
++    src="https://images.pexels.com/photos/10784419/pexels-photo-10784419.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" 
++    alt="Scenic view of the iconic Golden Gate Bridge spanning San Francisco Bay at daylight."
++    width="3024"
++    height="3024"
++    className="w-full h-full object-cover"
++  />
++  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2">
++    <a href="https://www.pexels.com/photo/golden-gate-bridge-under-clear-sky-10784419/" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-slate-300 transition-colors">
++      Photo by Torben Jensen on Pexels
++    </a>
++  </div>
++</div>" 
++                className="w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-500"
++                alt="Map of San Francisco Hayes Valley location"
++               />
++               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
++                 <div className="w-12 h-12 bg-zinc-50 rounded-full flex items-center justify-center shadow-lg animate-pulse">
++                    <MapPin className="text-zinc-900 w-6 h-6" />
++                 </div>
++               </div>
++            </div>
++
++            {/* Info */}
++            <div className="p-12 md:p-24 flex flex-col justify-center border-l border-zinc-800">
++              <h2 className="text-4xl font-bold tracking-tight mb-12">Visit Us</h2>
++              
++              <div className="space-y-12">
++                <div>
++                  <div className="flex items-center gap-3 text-zinc-400 mb-4">
++                    <MapPin className="w-5 h-5" />
++                    <span className="font-mono text-sm uppercase tracking-wide">Hayes Valley</span>
++                  </div>
++                  <p className="text-2xl font-light">
++                    432 Octavia St,<br />
++                    San Francisco, CA 94102
++                  </p>
++                </div>
++
++                <div>
++                  <div className="flex items-center gap-3 text-zinc-400 mb-4">
++                    <Clock className="w-5 h-5" />
++                    <span className="font-mono text-sm uppercase tracking-wide">Hours</span>
++                  </div>
++                  <ul className="space-y-2 text-xl font-light">
++                    <li className="flex justify-between w-full max-w-xs">
++                      <span>Mon - Fri</span>
++                      <span>7am — 6pm</span>
++                    </li>
++                    <li className="flex justify-between w-full max-w-xs text-zinc-400">
++                      <span>Sat - Sun</span>
++                      <span>8am — 7pm</span>
++                    </li>
++                  </ul>
++                </div>
++              </div>
++            </div>
++          </div>
++        </div>
++      </section>
++
++      <Footer />
++    </div>
++  );
++}
+\ No newline at end of file
